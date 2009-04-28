@@ -12,7 +12,7 @@ The source code for JavaScript Include is located in @src/js/include.js@. A mini
 
 An example module is located at @src/example.js@. You can ensure that it works by opening @src/example.html@.
 
-A copy of the GNU General Public License, under which this script is distributed, is located in COPYING.
+A copy of the GNU General Public License, under which this script is distributed, is located in @COPYING@.
 
 h3. Compatibility
 
