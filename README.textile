@@ -1,1 +1,3 @@
-<h1>JavaScript Include</h1>
+h1. JavaScript Include
+
+JavaScript Include is a simple script for including scripts on the fly. It relies on @XMLHttpRequest@ and @eval()@, so it is not the most robust include, but if you're loading scripts on the local domain, it might just do the trick.
