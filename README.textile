@@ -1,3 +1,7 @@
 h1. JavaScript Include
 
 JavaScript Include is a simple script for including scripts on the fly. It relies on @XMLHttpRequest@ and @eval()@, so it is not the most robust include, but if you're loading scripts on the local domain, it might just do the trick.
+
+JavaScript Include uses a very simple module pattern to package scripts as self-contained files. It includes a function called @namespace()@, which is inspired by the YUI namespace function.
+
+JavaScript Include always evaluates scripts in an anonymous scope, so the module must use either the @namespace()@ function or make a @window@ reference to make functions visible to other scripts.
