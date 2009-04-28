@@ -14,6 +14,21 @@ An example module is located at @src/example.js@. You can ensure that it works b
 
 A copy of the GNU General Public License, under which this script is distributed, is located in COPYING.
 
+h2. Compatibility
+
+Tested with most browsers I can easily get my hands on:
+
+|_.Browser|_.Platform|_.Result|
+|Safari 3|Mac OS X|{background:#40A662;color:white}.Success|
+|Firefox 3|Mac OS X|{background:#40A662;color:white}.Success|
+|Opera 9.6|Mac OS X|{background:#40A662;color:white}.Success|
+|Google Chrome|Windows XP|{background:#40A662;color:white}.Success|
+|Firefox 3|Windows XP|{background:#40A662;color:white}.Success|
+|Opera 9.6|Windows XP|{background:#40A662;color:white}.Success|
+|Internet Explorer 7|Windows XP|{background:#40A662;color:white}.Success|
+|Internet Explorer 6|Windows XP|{background:#40A662;color:white}.Success|
+|Internet Explorer 5.5|Windows XP|{background:#40A662;color:white}.Success{color:#999}|
+
 h2. Copyright
 
 Copyright (C) 2009 Andrew Noyes
