@@ -16,38 +16,27 @@
 */
 
 /**
- * @fileoverview JavaScript Module Loader. This will
- * download a JavaScript file via HTTP and process it.
- * If your script requires another script, simply use
- *     include("path/to/file.js");
- * before calling any functions within the file, and
- * the file will be downloaded and evaluated for use.
- * Note that when evaluated, scripts are eval'd in an
- * anonymous scope. Therefore, somewhere in your script,
- * you must use some kind of namespace mechanism to
- * create a namespace in the global namespace, or simply
- * assign any of your functions to the global namespace
- * using window.yourFunction = function etc...
- * 
- * For more details on usage, go to
+ * @fileOverview This is a simple module loader for JavaScript. It
+ * allows JavaScript files to be loaded and rendered in the browser
+ * on-deamnd. For more details on usage, go to
  * http://www-personal.umd.umich.edu/~aknoyes/articles/2009/04/include.php
+ *
  * @author Andrew Noyes noyesa@gmail.com
+ * @version 0.1
  */
 
 (function () {
 	
 	/**
 	 * Array of loaded JavaScript files
+	 * @type Array
 	 */
 	var loaded = [];
 	
 	/**
-	 * Returns file name string without
-	 * directories or domain names. Throws
-	 * an exception if file isn't on the
-	 * same domain as page.
-	 * @params file {String} location of script
-	 * @returns File name string without directories or domain
+	 * Returns file name string without directories or domain names.
+	 * Throws an exception if file isn't on the same domain as page.
+	 * @param {String} file Complete file path
 	 * @type String
 	 */
 	function getBaseName(file) {
@@ -66,7 +55,6 @@
 	
 	/**
 	 * Cross-browser HTTP object instantiator.
-	 * @returns XMLHttpRequest Object
 	 * @type XMLHttpRequest
 	 */
 	function getHttpObject() {
@@ -90,10 +78,10 @@
 	/**
 	 * Creates a namespace and returns a reference to the
 	 * last namespace created. Seen in YUI source.
-	 * @param namespace {String} Namespace to be created
+	 * @param {String} Namespace to be created
 	 * @type Object
 	 */
-	window.namespace = window.namespace || function () {
+	window.namespace = function () {
 		var i, il, objects, start, root, j, jl;
 		
 		for (i = 0, il = arguments.length; i < il; i++) {
@@ -111,14 +99,12 @@
 	};
 	
 	/**
-	 * Downloads and evaluates script files if
-	 * they are located on the same domain as
-	 * document.
-	 * @params file {String} URL location of script
-	 * @returns Boolean if download and eval is successful
+	 * Downloads and evaluates script files if they
+	 * are located on the same domain as document.
+	 * @params {String} file URL location of script
 	 * @type Bool
 	 */
-	window.include = window.include || function (file) {
+	window.include = function (file) {
 		// Variable declarations
 		var i, il, name, request, wrapper;
 		
