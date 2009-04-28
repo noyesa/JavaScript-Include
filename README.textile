@@ -19,15 +19,16 @@ h2. Compatibility
 Tested with most browsers I can easily get my hands on:
 
 |_.Browser|_.Platform|_.Result|
-|Safari 3|Mac OS X|{background:#40A662}.Success|
-|Firefox 3|Mac OS X|{background:#40A662}.Success|
-|Opera 9.6|Mac OS X|{background:#40A662}.Success|
-|Google Chrome|Windows XP|{background:#40A662}.Success|
-|Firefox 3|Windows XP|{background:#40A662}.Success|
-|Opera 9.6|Windows XP|{background:#40A662}.Success|
-|Internet Explorer 7|Windows XP|{background:#40A662}.Success|
-|Internet Explorer 6|Windows XP|{background:#40A662}.Success|
-|Internet Explorer 5.5|Windows XP|{background:#40A662}.Success|
+|Safari 3|Mac OS X|{background:#40A662}. Success|
+|Firefox 3|Mac OS X|{background:#40A662}. Success|
+|Opera 9.6|Mac OS X|{background:#40A662}. Success|
+|Camino 1.6|Mac OS X|{background:#40A662}. Success|
+|Google Chrome|Windows XP|{background:#40A662}. Success|
+|Firefox 3|Windows XP|{background:#40A662}. Success|
+|Opera 9.6|Windows XP|{background:#40A662}. Success|
+|Internet Explorer 7|Windows XP|{background:#40A662}. Success|
+|Internet Explorer 6|Windows XP|{background:#40A662}. Success|
+|Internet Explorer 5.5|Windows XP|{background:#40A662}. Success|
 
 h2. Copyright
 
