@@ -1,3 +1,19 @@
+/**
+ * @fileOverview This is an example of how a module
+ * is generally laid out. You can use a number of
+ * different module patterns, but this is the one
+ * that I find myself using most of the time, and
+ * it's essentially what I wrote JavaScript Include
+ * for.
+ * 
+ * Copyright 2009 Andrew Noyes
+ * This program is distributed under the terms 
+ * of the GNU General Public License
+ *
+ * @author Andrew Noyes
+ * @version 0.1
+ */
+
 (function () {
 	/*
 		Create reference to namespace so that the
@@ -6,19 +22,36 @@
 		change the namespace later, you don't have to
 		F&R or go hunting through your code.
 	*/
+	
+	/**
+	 * Local Namespace Reference
+	 * @type Object
+	 */
 	var ns = namespace("com.andrew");
 	
-	// Private variable
+	/**
+	 * Private variable
+	 * @type String
+	 */
 	var privVar = "Private!";
 	
-	// Private function
+	/**
+	 * Private function
+	 * @type String
+	 */
 	function priv() {
 		return privVar;
 	}
 	
+	/**
+	 * Public variable
+	 * @type String
+	 */
 	ns.pubVar = "Public!";
 	
-	// Public function; accesses private function through closure
+	/**
+	 * Public function
+	 */
 	ns.pub = function () {
 		alert(priv() + "\n" + this.pubVar);
 	};
