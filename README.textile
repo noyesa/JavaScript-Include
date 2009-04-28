@@ -1,7 +1,21 @@
 h1. JavaScript Include
 
-JavaScript Include is a simple script for including scripts on the fly. It relies on @XMLHttpRequest@ and @eval()@, so it is not the most robust include, but if you're loading scripts on the local domain, it might just do the trick.
+JavaScript Include is a simple script for including scripts on the fly. It relies on @XMLHttpRequest@ and @eval()@ to load scripts as soon as they're requested.
 
-JavaScript Include uses a very simple module pattern to package scripts as self-contained files. It includes a function called @namespace()@, which is inspired by the YUI namespace function.
+JavaScript Include uses a very simple module pattern to package scripts as self-contained modules. It includes a function called @namespace()@, which is inspired by the YUI namespace function. JavaScript Include itself is written in its module pattern, and there is also an example provided at @src/example.js@.
 
 JavaScript Include always evaluates scripts in an anonymous scope, so the module must use either the @namespace()@ function or make a @window@ reference to make functions visible to other scripts.
+
+h2. Organization
+
+The source code for JavaScript Include is located in @src/js/include.js@. A minified version is also supplied.
+
+An example module is located at @src/example.js@. You can ensure that it works but opening @src/example.html@.
+
+A copy of the GNU General Public License, under which this script is distributed, is located in COPYING.
+
+h2. Copyright
+
+Copyright (C) 2009 Andrew Noyes
+
+This program is distributed under the terms of the GNU General Public License
