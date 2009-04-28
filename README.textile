@@ -1,4 +1,4 @@
-h1. JavaScript Include
+h2. JavaScript Include
 
 JavaScript Include is a simple script for including scripts on the fly. It relies on @XMLHttpRequest@ and @eval()@ to load scripts as soon as they're requested.
 
@@ -6,7 +6,7 @@ JavaScript Include uses a very simple module pattern to package scripts as self-
 
 JavaScript Include always evaluates scripts in an anonymous scope, so the module must use either the @namespace()@ function or make a @window@ reference to make functions visible to other scripts.
 
-h2. Organization
+h3. Organization
 
 The source code for JavaScript Include is located in @src/js/include.js@. A minified version is also supplied.
 
@@ -14,7 +14,7 @@ An example module is located at @src/example.js@. You can ensure that it works b
 
 A copy of the GNU General Public License, under which this script is distributed, is located in COPYING.
 
-h2. Compatibility
+h3. Compatibility
 
 Tested with most browsers I can easily get my hands on:
 
@@ -30,7 +30,7 @@ Tested with most browsers I can easily get my hands on:
 |Internet Explorer 6|Windows XP|{background:#40A662}. Success|
 |Internet Explorer 5.5|Windows XP|{background:#40A662}. Success|
 
-h2. Copyright
+h3. Copyright
 
 Copyright (C) 2009 Andrew Noyes
 
