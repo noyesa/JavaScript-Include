@@ -26,6 +26,7 @@ Tested with most browsers I can easily get my hands on:
 |Google Chrome|Windows XP|{background:#40A662}. Success|
 |Firefox 3|Windows XP|{background:#40A662}. Success|
 |Opera 9.6|Windows XP|{background:#40A662}. Success|
+|Internet Explorer 8|Windows XP|{background:#40A662}. Success|
 |Internet Explorer 7|Windows XP|{background:#40A662}. Success|
 |Internet Explorer 6|Windows XP|{background:#40A662}. Success|
 |Internet Explorer 5.5|Windows XP|{background:#40A662}. Success|
