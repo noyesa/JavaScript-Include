@@ -39,7 +39,7 @@
 	 * Private function
 	 * @type String
 	 */
-	function priv() {
+	function privFunc() {
 		return privVar;
 	}
 	
@@ -52,7 +52,7 @@
 	/**
 	 * Public function
 	 */
-	ns.pub = function () {
+	ns.pubFunc = function () {
 		alert(priv() + "\n" + this.pubVar);
 	};
 })();
