@@ -53,6 +53,6 @@
 	 * Public function
 	 */
 	ns.pubFunc = function () {
-		alert(priv() + "\n" + this.pubVar);
+		alert(privFunc() + "\n" + this.pubVar);
 	};
 })();
