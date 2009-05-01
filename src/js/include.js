@@ -40,7 +40,9 @@
 	 * @type String
 	 */
 	function getBaseName(file) {
-		var protocol, nameSplit, fileName;
+		var protocol = file.substr(0, file.indexOf(":")),
+			nameSplit,
+			fileName;
 		
 		protocol = file.substr(0, file.indexOf(":"));
 		if (!!protocol.length) {
@@ -106,7 +108,8 @@
 	 */
 	window.include = function (file) {
 		// Variable declarations
-		var i, il, name, request, wrapper;
+		var i, il, request, wrapper,
+			name = getBaseName(file);
 		
 		// Get file name and check on same domain
 		name = getBaseName(file);
