@@ -39,7 +39,7 @@
 	 * @param {String} file Complete file path
 	 * @type String
 	 */
-	function getBaseName(file) {
+	var getBaseName = function (file) {
 		var protocol = file.substr(0, file.indexOf(":")),
 			nameSplit,
 			fileName;
@@ -53,13 +53,13 @@
 		fileName = nameSplit[nameSplit.length - 1];
 		
 		return fileName;
-	}	
+	};	
 	
 	/**
 	 * Cross-browser HTTP object instantiator.
 	 * @type XMLHttpRequest
 	 */
-	function getHttpObject() {
+	var getHttpObject = function () {
 		var xhr = false;
 		if (window.XMLHttpRequest) {	// Standard HTTP request
 			xhr = new XMLHttpRequest();
@@ -75,7 +75,7 @@
 			}
 		}
 		return xhr;
-	}
+	};
 	
 	/**
 	 * Creates a namespace and returns a reference to the
