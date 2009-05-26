@@ -43,6 +43,8 @@
 		return privVar;
 	}
 	
+	var count = 0;
+	
 	/**
 	 * Public variable
 	 * @type String
@@ -54,5 +56,10 @@
 	 */
 	ns.pubFunc = function () {
 		alert(privFunc() + "\n" + this.pubVar);
+		count++;
+	};
+	
+	ns.getCount = function () {
+	    return count;
 	};
 })();
