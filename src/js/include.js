@@ -22,60 +22,204 @@
  * http://www-personal.umd.umich.edu/~aknoyes/articles/2009/04/include.php
  *
  * @author Andrew Noyes noyesa@gmail.com
- * @version 0.1
+ * @version 0.2
  */
 
 (function () {
-	
 	/**
-	 * Array of loaded JavaScript files
-	 * @type Array
+	 * Cross-platform compatible HTTP request class
+	 * 
+	 * @constructor
+	 * @author Andrew Noyes noyesa@gmail.com
+	 * @param {String} url Path to resource
+	 * @param {Function} callBack Optional callback function
+	 * @param {Bool} async Syncronous or Asyncronous request
 	 */
-	var loaded = [];
-	
-	/**
-	 * Returns file name string without directories or domain names.
-	 * Throws an exception if file isn't on the same domain as page.
-	 * @param {String} file Complete file path
-	 * @type String
-	 */
-	var getBaseName = function (file) {
-		var protocol = file.substr(0, file.indexOf(":")),
-			nameSplit,
-			fileName;
-		
-		protocol = file.substr(0, file.indexOf(":"));
-		if (!!protocol.length) {
-			throw new Error("Scripts must be on same domain as document.");
-		}
-		
-		nameSplit = file.split("/");
-		fileName = nameSplit[nameSplit.length - 1];
-		
-		return fileName;
-	};	
-	
-	/**
-	 * Cross-browser HTTP object instantiator.
-	 * @type XMLHttpRequest
-	 */
-	var getHttpObject = function () {
-		var xhr = false;
-		if (window.XMLHttpRequest) {	// Standard HTTP request
-			xhr = new XMLHttpRequest();
-		} else if (window.ActiveXObject) {	// IE HTTP request
-			try {
-				xhr = new ActiveXObject("Msxml2.XMLHTTP");
-			} catch (e) {
-				try {
-					xhr = new ActiveXObject("Microsoft.XMLHTTP");
-				} catch (e) {
-					xhr = false;
-				}
-			}
-		}
-		return xhr;
+	var HttpRequest = function (url, callBack, async) {
+	    this.url = url;
+	    this.callBack = callBack || null;
+	    this.async = async || false;
+	    this.start();
 	};
+	
+	HttpRequest.prototype = {
+	    /**
+	     * Cross-platform HTTP request instantiator
+	     * 
+	     * @return HTTP request object
+	     * @type XMLHttpRequest
+	     */
+	    getRequestObject: function () {
+	        var xhr = false;
+	        if (window.XMLHttpRequest) {
+	            xhr = new XMLHttpRequest();
+	        } else if (window.ActiveXObject) {
+	            try {
+	                xhr = new ActiveXObject('Msxml2.XMLHTTP');
+	            } catch (e) {
+	                try {
+	                    xhr = new ActiveXObject('Microsoft.XMLHTTP');
+	                } catch (e) {
+	                    xhr = false;
+	                }
+	            }
+	        }
+	        return xhr;
+	    },
+	    
+	    /**
+	     * Initializes resource download
+	     */
+	    start: function () {
+	        var request = this.getRequestObject();
+	        if (request) {
+	            request.open('GET', this.url, this.async);
+	            request.send(null);
+	            if (this.async) {
+	                request.onreadystatechange = function () {
+	                    if (request.readyState === 4) {
+    	                    if (request.status === 200 || request.status === 304) {
+    	                        this.parseResponse(request.responseText);
+    	                    }
+    	                }
+	                }.apply(this);
+	            } else {
+	                this.parseResponse(request.responseText);
+	            }
+	        } else {
+	            throw new Error("Couldn't create HTTP object.");
+	        }
+	    },
+	    
+	    /**
+	     * Passes responseText to callack function and assigns responseText
+	     * data member
+	     */
+	    parseResponse: function (responseText) {
+	        if (this.callBack) {    
+	            this.callBack(responseText);
+	        }
+	        this.responseText = responseText;
+	    }
+	};
+    
+    /**
+     * Constructor for source file class
+     * 
+     * @author Andrew Noyes noyesa@gmail.com
+     * @param {String} Name File name of source file
+     * @param {String} source Source code
+     * @constructor
+     */
+    var SourceFile = function (path) {
+        this.path = path;
+        this.name = this.fileName();
+    };
+    
+    SourceFile.prototype = {
+        /**
+         * Parses the source file
+         */
+        parse: function () {
+            var wrapper = '(function () { ' + this.source + '})();';
+            eval(wrapper);
+        },
+        
+        /**
+         * Downloads the source file
+         */
+        download: function () {
+            var request = new HttpRequest(this.path, null, false);
+            this.source = request.responseText;
+        },
+        
+        /**
+    	 * Returns file name string without directories or domain names.
+    	 * Throws an exception if file isn't on the same domain as page.
+    	 * 
+    	 * @return File name without directories or domain
+    	 * @type String
+    	 */
+    	fileName: function () {
+    		var nameSplit, fileName;
+
+    		nameSplit = this.path.split("/");
+    		fileName = nameSplit[nameSplit.length - 1];
+
+    		return fileName;
+    	},
+        
+        /**
+         * Returns the file name of the source file.
+         * 
+         * @return Name of source file
+         * @type String
+         */
+        valueOf: function () {
+            return this.fileName();
+        },
+        
+        /**
+         * Alias for valueOf method
+         * 
+         * @return Name of source file
+         * @type String
+         */
+        toString: function () {
+            return this.valueOf();
+        }
+    };
+	
+	/**
+	 * Singleton object to keep track of files that have been loaded.
+	 * 
+	 * @type Object
+	 */
+	var loaded = function () {
+	    var files = [];
+	    
+	    return {
+	        /**
+	         * Adds a file to the collection
+	         * 
+	         * @param {String} name
+	         */
+	        addFile: function (file) {
+	           files.push(file);
+	        },
+	        
+	        /**
+	         * Checks to see if the collection already contains a file.
+	         * 
+	         * @param {String} name
+	         * @return Indicates whether file is already in collection
+	         * @type Bool
+	         */
+	        hasFile: function (file) {
+	           for (var i = 0, il = files.length; i < il; i++) {
+	               if (files[i].name === file.name) {
+	                   return true;
+	               }
+	           }
+	           return false;
+	        },
+	        
+	        /**
+	         * Returns a reference to the named file
+	         * 
+	         * @param {String} name Name of file to be loaded
+	         * @return Reference to file
+	         * @type Object
+	         */
+	        getFile: function (file) {
+	            for (var i = 0, il = files.length; i < il; i++) {
+	                if (files[i].name === file.name) {
+	                    return files[i];
+	                }
+	            }
+	        }
+	    };
+	}();
 	
 	/**
 	 * Creates a namespace and returns a reference to the
@@ -101,79 +245,49 @@
 	};
 	
 	/**
-	 * Determines whether a module has already been downloaded and parsed.
-	 * 
-	 * @param {String} file File that will be checked for
-	 * @return Indicates whether file has been loaded
-	 * @type Bool
-	 */
-	var isLoaded = function (file) {
-	    for (var i = 0, il = loaded.length; i < il; i++) {
-	        if (file === loaded[i]) {
-	            return true;
-	        }
-	    }
-	    return false;
-	};
-	
-	/**
-	 * Wraps response in an anonymous function with anonymous scope and parses
-	 * the contents.
-	 * 
-	 * @param {String} response
-	 */
-	var parseResponse = function (response) {
-	    var wrapper = '(function () {' + response + ' })();';
-	    
-	    eval(wrapper);
-	    loaded.push(name);	// Record that file has been loaded
-	};
-	
-	/**
-	 * Download the script and returns the source code.
-	 * 
-	 * @param {String} url Location fo the script
-	 * @return Script source code
-	 * @type String
-	 */
-	var downloadScript = function (url) {
-	    var request = getHttpObject();
-	    if (request) {
-	        request.open('GET', url, false);
-	        request.send(null);
-	    } else {
-	        throw new Error("Couldn't create HTTP object.");
-	    }
-	    
-	    return request.responseText;
-	};
-	
-	/**
 	 * Downloads and evaluates script files if they are located on the same
 	 * domain as document.
 	 * 
 	 * @param {String} file Path to script
 	 * @type Bool
 	 */
-	window.include = function (file) {
-		var sourceCode,
-			fileName = getBaseName(file);
+	window.include = function (path) {
+		var file = new SourceFile(path);
 		
 		// If file has been loaded, don't load it again
-		if (isLoaded(fileName)) {
+		if (loaded.hasFile(file)) {
 		    return true;
 		}
 		
 		// Download script
-		sourceCode = downloadScript(file);
+		file.download();
 		
 		try {	// Check for errors in script
-			parseResponse(sourceCode);
+			file.parse();
 		} catch (e) {
-			throw new Error("Exceptions in " + fileName + ": " + e.message);
+			throw new Error("Exceptions in " + file + ": " + e.message);
 		}
 		
+		loaded.addFile(file);	// Record that file has been loaded
+		
 		return true;
+	};
+	
+	/**
+	 * Parses a file even if it has been already loaded. Avoids making
+	 * unecessary HTTP request.
+	 * 
+	 * @param {String} path Path to source file
+	 * @type Bool
+	 */
+	window.reload = function (path) {
+	    var file = new SourceFile(path);
+	    
+	    if (loaded.hasFile(file)) {
+	        loaded.getFile(file).parse();
+	        return true;
+	    }
+	    return include(path);
 	};
 	
 })();
