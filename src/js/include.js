@@ -284,7 +284,7 @@
             throw new Error("Exceptions in " + file + ": " + e.message);
         }
         
-        loaded.addFile(file);   // Record that file has been loaded
+        loaded.addFile(file);   // Push file to loaded singleton
         
         return true;
     };
