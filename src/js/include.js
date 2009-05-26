@@ -182,11 +182,27 @@
             /**
              * Adds a file to the collection
              * 
-             * @param {String} name
+             * @param {Object} file
              */
             addFile: function (file) {
+               if (this.hasFile(file)) {
+                   this.removeFile(file);
+               }
                files.push(file);
             },
+            
+            /**
+             * Removes a file from the collection
+             * 
+             * @param {Object} file
+             */
+             removeFile: function (file) {
+                 for (var i = 0, il = files.length; i < il; i++) {
+                     if (files[i].name === file.name) {
+                         files.splice(i, 1);
+                     }
+                 }
+             },
             
             /**
              * Checks to see if the collection already contains a file.
@@ -280,11 +296,17 @@
      * @param {String} path Path to source file
      * @type Bool
      */
-    window.reload = function (path) {
-        var file = new SourceFile(path);
-        
+    window.reload = function (path, redownload) {
+        redownload = redownload || false;
+        var newFile,
+            file = new SourceFile(path);
+            
         if (loaded.hasFile(file)) {
-            loaded.getFile(file).parse();
+            newFile = loaded.getFile(file);
+            if (redownload) {
+                newFile.download();
+            }
+            newFile.parse();
             return true;
         }
         return include(path);
