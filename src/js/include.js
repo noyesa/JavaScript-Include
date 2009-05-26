@@ -18,7 +18,7 @@
 /**
  * @fileOverview This is a simple module loader for JavaScript. It
  * allows JavaScript files to be loaded and rendered in the browser
- * on-deamnd. For more details on usage, go to
+ * on-demand. For more details on usage, go to
  * http://www-personal.umd.umich.edu/~aknoyes/articles/2009/04/include.php
  *
  * @author Andrew Noyes noyesa@gmail.com
@@ -101,43 +101,77 @@
 	};
 	
 	/**
-	 * Downloads and evaluates script files if they
-	 * are located on the same domain as document.
-	 * @params {String} file URL location of script
+	 * Determines whether a module has already been downloaded and parsed.
+	 * 
+	 * @param {String} file File that will be checked for
+	 * @return Indicates whether file has been loaded
+	 * @type Bool
+	 */
+	var isLoaded = function (file) {
+	    for (var i = 0, il = loaded.length; i < il; i++) {
+	        if (file === loaded[i]) {
+	            return true;
+	        }
+	    }
+	    return false;
+	};
+	
+	/**
+	 * Wraps response in an anonymous function with anonymous scope and parses
+	 * the contents.
+	 * 
+	 * @param {String} response
+	 */
+	var parseResponse = function (response) {
+	    var wrapper = '(function () {' + response + ' })();';
+	    
+	    eval(wrapper);
+	    loaded.push(name);	// Record that file has been loaded
+	};
+	
+	/**
+	 * Download the script and returns the source code.
+	 * 
+	 * @param {String} url Location fo the script
+	 * @return Script source code
+	 * @type String
+	 */
+	var downloadScript = function (url) {
+	    var request = getHttpObject();
+	    if (request) {
+	        request.open('GET', url, false);
+	        request.send(null);
+	    } else {
+	        throw new Error("Couldn't create HTTP object.");
+	    }
+	    
+	    return request.responseText;
+	};
+	
+	/**
+	 * Downloads and evaluates script files if they are located on the same
+	 * domain as document.
+	 * 
+	 * @param {String} file Path to script
 	 * @type Bool
 	 */
 	window.include = function (file) {
-		// Variable declarations
-		var i, il, request, wrapper,
-			name = getBaseName(file);
-		
-		// Get file name and check on same domain
-		name = getBaseName(file);
+		var sourceCode,
+			fileName = getBaseName(file);
 		
 		// If file has been loaded, don't load it again
-		for (i = 0, il = loaded.length; i < il; i++) {
-			if (name === loaded[i]) {
-				return true;
-			}
+		if (isLoaded(fileName)) {
+		    return true;
 		}
 		
 		// Download script
-		request = getHttpObject();
-		if (request) {
-			request.open("GET", file, false);
-			request.send(null);
-		} else {
-			throw new Error("Couldn't create HTTP object.");
-		}
+		sourceCode = downloadScript(file);
 		
-		// Eval script in anonymous scope to protect global namespace
-		wrapper = "(function () {" + request.responseText + "})();";
-		try {	// Check for exceptions in script
-			eval(wrapper);
+		try {	// Check for errors in script
+			parseResponse(sourceCode);
 		} catch (e) {
-			throw new Error("Exceptions thrown in " + name + ": " + e.message);
+			throw new Error("Exceptions in " + fileName + ": " + e.message);
 		}
-		loaded.push(name);	// Record that file has been loaded
 		
 		return true;
 	};
