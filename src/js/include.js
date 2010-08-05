@@ -39,7 +39,6 @@
         this.url = url;
         this.callBack = callBack || null;
         this.async = async || false;
-        this.start();
     };
     
     HttpRequest.prototype = {
@@ -130,6 +129,7 @@
          */
         download: function () {
             var request = new HttpRequest(this.path, null, false);
+            request.start();
             this.source = request.responseText;
         },
         
