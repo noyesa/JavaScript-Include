@@ -17,7 +17,7 @@
 
 /**
  * @fileOverview This is a simple module loader for JavaScript. It
- * allows JavaScript files to be loaded and rendered in the browser
+ * allows JavaScript files to be loaded and interpreted in the browser
  * on-demand. For more details on usage, go to
  * http://www-personal.umd.umich.edu/~aknoyes/articles/2009/04/include.php
  *
